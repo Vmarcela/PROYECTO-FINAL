@@ -1,10 +1,10 @@
+import React from 'react';
 import './App.css';
+import AppRoutingReact from './app-routing-react';
 
 function App() {
   return (
-    <div className="App">
-      <h1>hola mundo</h1>
-    </div>
+      <AppRoutingReact />
   );
 }
 

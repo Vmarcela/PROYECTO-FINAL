@@ -49,4 +49,51 @@ notesController.getAllNotes = async (req, res) => {
     }
 }
 
+notesController.updateNote = async (req, res) => {
+    try {
+        const { id } = req.params; // Obtiene el ID de la nota a actualizar desde los parámetros de la URL
+
+        // Verifica si el cuerpo de la solicitud contiene datos
+        if (!req.body || !req.body.titulo || !req.body.contenido) {
+            return res.status(400).json({ error: 'Los datos de la nota son requeridos' });
+        }
+
+        // Actualiza la nota en la base de datos
+        const notaActualizada = await Note.findByIdAndUpdate(id, {
+            titulo: req.body.titulo,
+            contenido: req.body.contenido,
+        }, { new: true }); // { new: true } devuelve la nota actualizada en lugar de la antigua
+
+        if (!notaActualizada) {
+            return res.status(404).json({ error: 'Nota no encontrada' });
+        }
+
+        // Envía la nota actualizada como respuesta en formato JSON
+        res.json(notaActualizada);
+    } catch (error) {
+        console.error('Error al actualizar la nota:', error);
+        res.status(500).json({ error: 'Error al actualizar la nota' });
+    }
+}
+
+notesController.deleteNote = async (req, res) => {
+    try {
+        const { id } = req.params; // Obtiene el ID de la nota a eliminar desde los parámetros de la URL
+
+        // Busca la nota por ID y elimínala
+        const notaEliminada = await Note.findByIdAndDelete(id);
+
+        if (!notaEliminada) {
+            return res.status(404).json({ error: 'Nota no encontrada' });
+        }
+
+        // Envía un mensaje de éxito como respuesta
+        res.json({ message: 'Nota eliminada con éxito' });
+    } catch (error) {
+        console.error('Error al eliminar la nota:', error);
+        res.status(500).json({ error: 'Error al eliminar la nota' });
+    }
+}
+
+
 module.exports = notesController

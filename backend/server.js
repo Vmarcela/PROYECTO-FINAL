@@ -33,6 +33,7 @@ app.use((req, res, next) => {
 });
 
 /* Rutas */
-app.use(require('./routes/notes.routes'))
+app.use(require('./routes/notes.routes'));
+app.use(require('./routes/client.routes'));
 
 module.exports = app;

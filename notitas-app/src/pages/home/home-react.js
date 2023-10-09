@@ -7,7 +7,6 @@ function Home() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [notaActual, setNotaActual] = useState(null);
-  const [usuario, setUsuario] = useState("");
 
   useEffect(() => {
     obtenerNotasDesdeAPI();
@@ -153,6 +152,10 @@ function Home() {
         setNotaActual(null); // Limpia la nota actual en el estado
         setTitulo(""); // Limpia el título y contenido en el estado
         setContenido("");
+
+        // Recarga la página después de la actualización
+        window.location.reload()
+        window.location.href = window.location.href
       })
       .catch((error) => {
         console.error("Error al actualizar la nota:", error);
@@ -180,7 +183,6 @@ function Home() {
     }
   };
 
-  
   return (
     <div className="container mt-5">
       <nav class="navbar navbar-expand-lg navbar bg m-0 p-0">

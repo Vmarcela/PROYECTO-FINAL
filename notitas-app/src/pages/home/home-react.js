@@ -6,7 +6,8 @@ function Home() {
   const [notas, setNotas] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
-  const [editId, setEditId] = useState(null);
+  const [notaActual, setNotaActual] = useState(null);
+  const [usuario, setUsuario] = useState("");
 
   useEffect(() => {
     obtenerNotasDesdeAPI();
@@ -40,8 +41,8 @@ function Home() {
           </div>
           <div className="card-footer text-right border-0">
             <button
-              className="btn btn-primary mr-2"
-              onClick={() => editarNota(nota._id)}
+              className="btn btn-primary mr-5"
+              onClick={() => editarNota(nota)}
             >
               Editar
             </button>
@@ -57,21 +58,11 @@ function Home() {
     ));
   };
 
-  function generarID() {
+  const generarID = () => {
     return Math.random().toString(36).substring(2, 15);
-  }
-
-  const crearNotaNueva = () => {
-    const nuevaNotaEjemplo = {
-      _id: Math.random().toString(36).substring(2, 15),
-      titulo: "Título de Ejemplo",
-      contenido: "Contenido de Ejemplo",
-    };
-
-    setNotas([...notas, nuevaNotaEjemplo]);
   };
 
-  const agregarNotaNueva = () => {
+  const crearNotaNueva = () => {
     const nuevoID = generarID();
 
     const nuevaNota = {
@@ -97,29 +88,76 @@ function Home() {
       });
   };
 
-  function editarNota(_id) {
-    fetch(`http://localhost:3002/notes/${_id}`)
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 404) {
-            return null;
-          }
-          return null;
-        }
-        return response.json();
-      })
-      .then((nota) => {
-        if (nota !== null) {
-          setTitulo(nota.titulo);
-          setContenido(nota.contenido);
-        }
+  const agregarNotaNueva = (event) => {
+    const titulo = "titulo";
+    const contenido = "Dummy contenido";
+
+    const nuevoID = generarID();
+
+    const nuevaNota = {
+      id: nuevoID,
+      titulo: titulo,
+      contenido: contenido,
+    };
+
+    fetch("http://127.0.0.1:3002/notes/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(nuevaNota),
+      credentials: "same-origin",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
       })
       .catch((error) => {
-        // Manejar errores generales aquí
+        console.error("Error al enviar la nota:", error);
       });
-  }
-  
-    
+  };
+
+  const editarNota = (nota) => {
+    window.confirm("¿Estás seguro de que deseas Editar esta nota?");
+    setNotaActual(nota); // Guarda la nota que se va a editar en el estado
+    setTitulo(nota.titulo); // Establece el título y contenido actuales en el estado
+    setContenido(nota.contenido);
+    window.$("#modalNuevaNota").modal("show");
+  };
+
+  const guardarNotaEditada = () => {
+    if (!titulo || !contenido) {
+      alert("Por favor, complete todos los campos.");
+      return;
+    }
+
+    const notaEditada = {
+      _id: notaActual._id,
+      titulo: titulo,
+      contenido: contenido,
+    };
+
+    fetch(`http://localhost:3002/notes/update/${notaActual._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(notaEditada),
+      credentials: "same-origin",
+    })
+      .then((response) => response.json())
+      .then((notaActualizada) => {
+        console.log("Nota actualizada:", notaActualizada);
+        $("#modalNuevaNota").modal("hide"); // Cierra el modal después de actualizar
+        obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de editar
+        setNotaActual(null); // Limpia la nota actual en el estado
+        setTitulo(""); // Limpia el título y contenido en el estado
+        setContenido("");
+      })
+      .catch((error) => {
+        console.error("Error al actualizar la nota:", error);
+      });
+  };
 
   const eliminarNota = (_id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta nota?")) {
@@ -131,7 +169,7 @@ function Home() {
         .then((data) => {
           if (data.success) {
             console.log("Nota eliminada con éxito");
-            // Puedes realizar acciones adicionales si es necesario
+            obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de eliminar una
           } else {
             console.error("Error al eliminar la nota:", data.message);
           }
@@ -142,25 +180,52 @@ function Home() {
     }
   };
 
+  
   return (
     <div className="container mt-5">
+      <nav class="navbar navbar-expand-lg navbar bg m-0 p-0">
+        <div class="d-flex flex-grow-1 p-3 m-0 w-100">
+          <a class="navbar-brand" href="#">
+            Mi Aplicación
+          </a>
+          <div class="d-flex justify-content-between w-100">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  Home
+                </a>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/">
+                  Cerrar Sesión
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <hr />
+
       <div className="row justify-content-center my-5">
-        <div className="col-md-6 offset-md-3">
+        <div className="col-md-6">
           <button
-            className="btn btn-primary btn-lg btn-block"
+            className="btn btn-success btn-lg mx-auto"
             data-bs-toggle="modal"
             data-bs-target="#modalNuevaNota"
           >
-            Agregar Nueva Nota
+            Agregar nueva nota
           </button>
         </div>
-        <div className="col-md-6 offset-md-3">
+        <div className="col-md-6">
           <button
-            className="btn btn-primary btn-lg btn-block"
             id="botonTest"
-            onClick={crearNotaNueva}
+            className="btn btn-success btn-lg mx-auto"
+            onClick={agregarNotaNueva}
           >
-            Test Nueva Nota
+            Test nueva nota
           </button>
         </div>
       </div>
@@ -168,7 +233,6 @@ function Home() {
       <div className="row mt-5" id="notaContainer">
         {mostrarNotas()}
       </div>
-
       <div
         className="modal fade"
         id="modalNuevaNota"
@@ -234,7 +298,7 @@ function Home() {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={agregarNotaNueva}
+                onClick={notaActual ? guardarNotaEditada : crearNotaNueva}
               >
                 Guardar
               </button>

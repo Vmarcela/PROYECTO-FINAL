@@ -7,9 +7,8 @@ function Home() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [notaActual, setNotaActual] = useState(null);
-  const [notasActualizadas, setNotasActualizadas] = useState(false); // Nuevo estado
 
-  
+
 
   useEffect(() => {
     obtenerNotasDesdeAPI();
@@ -27,7 +26,6 @@ function Home() {
       .then((response) => response.json())
       .then((notasDesdeAPI) => {
         setNotas(notasDesdeAPI);
-        setNotasActualizadas(true); // Actualiza el estado de notasActualizadas
       })
       .catch((error) => {
         console.error("Error al obtener las notas desde la API:", error);
@@ -153,11 +151,10 @@ function Home() {
       .then((notaActualizada) => {
         console.log("Nota actualizada:", notaActualizada);
         $("#modalNuevaNota").modal("hide"); // Cierra el modal después de actualizar
-        setNotasActualizadas(false); // Establece notasActualizadas en false
-       /* obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de editar
-        setNotaActual(null); // Limpia la nota actual en el estado
-        setTitulo(""); // Limpia el título y contenido en el estado
-        setContenido("");*/
+        /* obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de editar
+ setNotaActual(null); // Limpia la nota actual en el estado
+ setTitulo(""); // Limpia el título y contenido en el estado
+ setContenido("");*/
 
         // Recarga la página después de la actualización
         window.location.reload()
@@ -178,7 +175,6 @@ function Home() {
         .then((data) => {
           if (data.success) {
             console.log("Nota eliminada con éxito");
-            setNotasActualizadas(false); // Establece notasActualizadas en false  
             //obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de eliminar una
           } else {
             console.error("Error al eliminar la nota:", data.message);
@@ -187,6 +183,7 @@ function Home() {
         .catch((error) => {
           console.error("Error al eliminar la nota:", error);
         });
+      window.location.reload();
     }
   };
 

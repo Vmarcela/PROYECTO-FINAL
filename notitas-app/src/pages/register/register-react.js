@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./register-react.css";
+import Spinner from 'react-bootstrap/Spinner';
 
 function Register() {
   const [nombre, setNombre] = useState("");
@@ -12,9 +13,12 @@ function Register() {
   const [fecha, setFecha] = useState("");
   const [documento, setDocumento] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
 
     const requestBody = {
       nombres: nombre,
@@ -43,7 +47,7 @@ function Register() {
         // Registro exitoso
         alert("Registro exitoso. Ahora puedes iniciar sesión.");
         // Redirige al usuario a la página de inicio de sesión
-        window.location.href = "/login";
+        window.location.href = "./login";
       } else {
         // Error en el registro
         setErrorMessage(`Error: ${data.msg}`);
@@ -51,6 +55,9 @@ function Register() {
     } catch (error) {
       console.error(error);
       alert("Error en el servidor");
+    } finally {
+      // Cambia el estado isLoading a false después de la solicitud
+      setIsLoading(false);
     }
   };
   return (
@@ -203,11 +210,18 @@ function Register() {
                 Registrar
               </button>
             </div>
+            <div className='d-flex justify-content-center m-4'>
+            {isLoading && ( // Muestra la animación de carga si isLoading es true
+              <Spinner animation="border" role="status" >
+              <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
+            </div>
           </form>
+          {errorMessage && <div className="text-danger text-center m-4">{errorMessage}</div>}
           <div className="login-link text text-center mt-3">
             ¿Ya tienes una cuenta? <a href="./login">Iniciar Sesión</a>
           </div>
-          {errorMessage && <div className="text-danger">{errorMessage}</div>}
         </div>
       </div>
     </div>

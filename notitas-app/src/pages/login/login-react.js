@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './login-react.css';
+import Spinner from 'react-bootstrap/Spinner';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,6 +15,7 @@ function Login() {
       email,
       password,
     };
+    setIsLoading(true);
 
     try {
       const response = await fetch("http://127.0.0.1:3002/login_client", {
@@ -26,14 +29,18 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Aquí puedes redirigir al usuario a la página de inicio, por ejemplo.
+        // Aquí puedes redirigir al usuario a la página de inicio.
         window.location.href = "home";
       } else {
         // Error en el inicio de sesión
-        setErrorMessage(`Error: ${data.msg}`);
+        console.log(setErrorMessage(`Error: ${data.msg}`));
+        setErrorMessage(`Error: Usuario o clave incorrectos`);
       }
     } catch (error) {
       console.error(error);
+
+    } finally {
+      setIsLoading(false); // Ocultar la animación de carga después de procesar la solicitud
     }
   };
   return (
@@ -67,13 +74,21 @@ function Login() {
               />
             </div>
             <div className="text-center mt-5">
-              <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
+              <button type="submit" className="btn btn-primary">Iniciar Sesión
+              </button>
+            </div>
+            <div className='d-flex justify-content-center m-4'>
+            {isLoading && ( // Muestra la animación de carga si isLoading es true
+              <Spinner animation="border" role="status" >
+              <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
             </div>
           </form>
-          <div className="text-center mt-5">
+          {errorMessage && <div className="text-danger text-center">{errorMessage}</div>}
+          <div className="text-center mt-4">
             ¿No tienes una cuenta? <a href="/register">Regístrate aquí</a>
           </div>
-          {errorMessage && <div className="text-danger">{errorMessage}</div>}
         </div>
       </div>
     </div>

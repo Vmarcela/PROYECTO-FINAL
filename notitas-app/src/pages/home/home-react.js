@@ -7,6 +7,8 @@ function Home() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [notaActual, setNotaActual] = useState(null);
+  
+
 
   useEffect(() => {
     obtenerNotasDesdeAPI();
@@ -110,6 +112,7 @@ function Home() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error al enviar la nota:", error);
@@ -159,7 +162,7 @@ function Home() {
       })
       .catch((error) => {
         console.error("Error al actualizar la nota:", error);
-      });
+      });;
   };
 
   const eliminarNota = (_id) => {
@@ -180,6 +183,7 @@ function Home() {
         .catch((error) => {
           console.error("Error al eliminar la nota:", error);
         });
+      window.location.reload();
     }
   };
 
@@ -231,11 +235,11 @@ function Home() {
           </button>
         </div>
       </div>
-
-      <div className="row mt-5" id="notaContainer">
-        {mostrarNotas()}
-      </div>
-      <div
+ 
+        <div className="row mt-5" id="notaContainer">
+          {mostrarNotas()}
+        </div>
+        <div
         className="modal fade"
         id="modalNuevaNota"
         tabIndex="-1"

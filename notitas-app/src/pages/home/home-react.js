@@ -10,6 +10,8 @@ function Home() {
   
 
 
+
+
   useEffect(() => {
     obtenerNotasDesdeAPI();
   }, []);
@@ -151,10 +153,10 @@ function Home() {
       .then((notaActualizada) => {
         console.log("Nota actualizada:", notaActualizada);
         $("#modalNuevaNota").modal("hide"); // Cierra el modal después de actualizar
-        obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de editar
-        setNotaActual(null); // Limpia la nota actual en el estado
-        setTitulo(""); // Limpia el título y contenido en el estado
-        setContenido("");
+        /* obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de editar
+ setNotaActual(null); // Limpia la nota actual en el estado
+ setTitulo(""); // Limpia el título y contenido en el estado
+ setContenido("");*/
 
         // Recarga la página después de la actualización
         window.location.reload()
@@ -175,7 +177,7 @@ function Home() {
         .then((data) => {
           if (data.success) {
             console.log("Nota eliminada con éxito");
-            obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de eliminar una
+            //obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de eliminar una
           } else {
             console.error("Error al eliminar la nota:", data.message);
           }

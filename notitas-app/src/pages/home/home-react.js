@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./home-react.css";
 import $ from "jquery";
 
+
 function Home() {
   const [notas, setNotas] = useState([]);
   const [titulo, setTitulo] = useState("");
@@ -154,9 +155,9 @@ function Home() {
         console.log("Nota actualizada:", notaActualizada);
         $("#modalNuevaNota").modal("hide"); // Cierra el modal después de actualizar
         /* obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de editar
- setNotaActual(null); // Limpia la nota actual en el estado
- setTitulo(""); // Limpia el título y contenido en el estado
- setContenido("");*/
+        setNotaActual(null); // Limpia la nota actual en el estado
+        setTitulo(""); // Limpia el título y contenido en el estado
+        setContenido("");*/
 
         // Recarga la página después de la actualización
         window.location.reload()
@@ -191,11 +192,28 @@ function Home() {
 
   return (
     <div className="container mt-5">
-      <nav class="navbar navbar-expand-lg navbar bg m-0 p-0">
-        <div class="d-flex flex-grow-1 p-3 m-0 w-100">
+      <nav class="d-block navbar navbar-expand-lg navbar bg m-0 p-0">
+        <section className="d-flex justify-content-between">
+          <ul class="navbar-nav d-flex justify-content-between w-100">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    Home
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    Cerrar Sesión
+                  </a>
+                </li>
+            </ul>
+        </section>
+        <section className="d-flex justify-content-center">
+          <h1> Para recordar </h1>
+        </section>
+        {/*<div class="d-flex flex-grow-1 p-3 m-0 w-100">
           <a class="navbar-brand" href="#">
             Mi Aplicación
-          </a>
+            </a>
           <div class="d-flex justify-content-between w-100">
             <ul class="navbar-nav">
               <li class="nav-item">
@@ -203,7 +221,7 @@ function Home() {
                   Home
                 </a>
               </li>
-            </ul>
+          </ul>
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="/">
@@ -212,13 +230,13 @@ function Home() {
               </li>
             </ul>
           </div>
-        </div>
+        </div>*/}
       </nav>
 
       <hr />
 
-      <div className="row justify-content-center my-5">
-        <div className="col-md-6">
+      <section className="row d-flex justify-content-center my-5">
+        <div className="col-md-6 d-flex justify-content-center">
           <button
             className="btn btn-success btn-lg mx-auto"
             data-bs-toggle="modal"
@@ -236,12 +254,12 @@ function Home() {
             Test nueva nota
           </button>
         </div>
-      </div>
- 
-        <div className="row mt-5" id="notaContainer">
+      </section>
+
+      <div className="row mt-5" id="notaContainer">
           {mostrarNotas()}
-        </div>
-        <div
+      </div>
+      <div
         className="modal fade"
         id="modalNuevaNota"
         tabIndex="-1"
@@ -314,6 +332,26 @@ function Home() {
           </div>
         </div>
       </div>
+      <section className="row d-flex justify-content-center my-5">
+        <div className="col-md-6 d-flex justify-content-center">
+          <button
+            className="btn btn-success btn-lg mx-auto"
+            data-bs-toggle="modal"
+            data-bs-target="#modalNuevaNota"
+          >
+            Agregar nueva nota
+          </button>
+        </div>
+        <div className="col-md-6">
+          <button
+            id="botonTest"
+            className="btn btn-success btn-lg mx-auto"
+            onClick={agregarNotaNueva}
+          >
+            Test nueva nota
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

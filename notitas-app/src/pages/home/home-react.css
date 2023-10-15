@@ -1,3 +1,16 @@
 .container{
     background-color: mediumaquamarine;
 }
+.-div-btn-danger {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .-div-btn-danger button {
+    background-color: transparent; 
+    color: black; 
+    border: none; 
+    padding: 5px 10px; 
+    cursor: pointer;
+}

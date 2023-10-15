@@ -78,5 +78,5 @@ const login_client = async (req = request, res = response) => {
 
 module.exports = {
   register_client,
-  login_client
+  login_client,
 };

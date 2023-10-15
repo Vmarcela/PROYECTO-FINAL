@@ -29,7 +29,9 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Aquí puedes redirigir al usuario a la página de inicio.
+        // Guarda el nombre del usuario en el localStorage
+        localStorage.setItem("userName", data.data.client.nombres);
+        // Aquí se redirige al usuario a la página de inicio.
         window.location.href = "home";
       } else {
         // Error en el inicio de sesión
@@ -45,7 +47,7 @@ function Login() {
   };
   return (
     <div className="container mt-5">
-      <div className="row">
+      <div className="row vh-100 d-flex align-items-center">
         <div className="col-md-6 offset-md-3 mb-5">
           <h2 className="text-center my-5">Inicio de Sesión</h2>
           <form onSubmit={handleSubmit}>

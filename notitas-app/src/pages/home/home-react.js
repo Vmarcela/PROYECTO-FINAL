@@ -9,10 +9,16 @@ function Home() {
   const [contenido, setContenido] = useState("");
   const [notaActual, setNotaActual] = useState(null);
   
+  const [userName, setUserName] = useState('');
 
-
-
-
+  useEffect(() => {
+    // Extraer el nombre de usuario del localStorage
+    const storedUserName = localStorage.getItem("userName");
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+  }, []);
+  
   useEffect(() => {
     obtenerNotasDesdeAPI();
   }, []);
@@ -200,15 +206,18 @@ function Home() {
                     Home
                   </a>
                 </li>
+                <li>
+                <h5>Bienvenid@ {userName}!</h5>
+                </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/login">
                     Cerrar Sesión
                   </a>
                 </li>
             </ul>
         </section>
         <section className="d-flex justify-content-center">
-          <h1> Para recordar </h1>
+          <h1> Recuerda </h1>
         </section>
         {/*<div class="d-flex flex-grow-1 p-3 m-0 w-100">
           <a class="navbar-brand" href="#">

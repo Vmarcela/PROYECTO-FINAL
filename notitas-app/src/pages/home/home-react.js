@@ -45,6 +45,14 @@ function Home() {
     return notas.map((nota) => (
       <div key={nota._id} className="col-md-3">
         <div className="card mb-4">
+        <div className="-div-btn-danger">
+        <button        
+              className="btn btn-danger"
+              onClick={() => eliminarNota(nota._id)}
+            >
+              X             
+            </button>  
+            </div>   
           <div className="card-body overflow-hidden">
             <h5 className="card-title">{nota.titulo}</h5>
             <p className="card-text">{nota.contenido}</p>
@@ -56,12 +64,7 @@ function Home() {
             >
               Editar
             </button>
-            <button
-              className="btn btn-danger"
-              onClick={() => eliminarNota(nota._id)}
-            >
-              Eliminar
-            </button>
+  
           </div>
         </div>
       </div>
@@ -334,6 +337,7 @@ function Home() {
                 type="button"
                 className="btn btn-primary"
                 onClick={notaActual ? guardarNotaEditada : crearNotaNueva}
+                data-bs-dismiss="modal"
               >
                 Guardar
               </button>

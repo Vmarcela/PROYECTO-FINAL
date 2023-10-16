@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import "./home-react.css";
 import $ from "jquery";
 
@@ -8,7 +8,6 @@ function Home() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [notaActual, setNotaActual] = useState(null);
-  
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -22,6 +21,8 @@ function Home() {
   useEffect(() => {
     obtenerNotasDesdeAPI();
   }, []);
+
+
 
   const obtenerNotasDesdeAPI = () => {
     fetch("http://localhost:3002/notes", {
@@ -44,27 +45,26 @@ function Home() {
   const mostrarNotas = () => {
     return notas.map((nota) => (
       <div key={nota._id} className="col-md-3">
-        <div className="card mb-4">
-        <div className="-div-btn-danger">
-        <button        
-              className="btn btn-danger"
-              onClick={() => eliminarNota(nota._id)}
-            >
-              X             
+        <div className="card mb-4 text-bg-warning">
+          <div className="-div-btn-danger">
+            <button        
+                className="btn btn-danger"
+                onClick={() => eliminarNota(nota._id)}
+              >
+                X             
             </button>  
-            </div>   
+          </div>   
           <div className="card-body overflow-hidden">
             <h5 className="card-title">{nota.titulo}</h5>
             <p className="card-text">{nota.contenido}</p>
           </div>
-          <div className="card-footer text-right border-0">
+          <div className="card-footer text-center border-0">
             <button
-              className="btn btn-primary mr-5"
+              className="btn btn-outline-dark btn-sm mr-5"
               onClick={() => editarNota(nota)}
             >
               Editar
             </button>
-  
           </div>
         </div>
       </div>
@@ -95,13 +95,17 @@ function Home() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        window.location.reload();
+
       })
       .catch((error) => {
         console.error("Error al enviar la nota:", error);
       });
   };
 
-  const agregarNotaNueva = (event) => {
+  /*
+    //Codigo para el boton test nota nueva
+    const agregarNotaNueva = (event) => {
     const titulo = "titulo";
     const contenido = "Dummy contenido";
 
@@ -129,10 +133,10 @@ function Home() {
       .catch((error) => {
         console.error("Error al enviar la nota:", error);
       });
-  };
+  };*/
 
   const editarNota = (nota) => {
-    window.confirm("¿Estás seguro de que deseas Editar esta nota?");
+    //window.confirm("¿Estás seguro de que deseas Editar esta nota?");
     setNotaActual(nota); // Guarda la nota que se va a editar en el estado
     setTitulo(nota.titulo); // Establece el título y contenido actuales en el estado
     setContenido(nota.contenido);
@@ -169,12 +173,13 @@ function Home() {
         setContenido("");*/
 
         // Recarga la página después de la actualización
-        window.location.reload()
-        window.location.href = window.location.href
+        /*window.location.reload()
+        window.location.href = window.location.href*/
       })
       .catch((error) => {
         console.error("Error al actualizar la nota:", error);
       });;
+      window.location.reload()
   };
 
   const eliminarNota = (_id) => {
@@ -188,6 +193,8 @@ function Home() {
           if (data.success) {
             console.log("Nota eliminada con éxito");
             //obtenerNotasDesdeAPI(); // Actualiza la lista de notas después de eliminar una
+            const notasActualizadas = notas.filter((nota) => nota._id !== _id);
+            setNotas(notasActualizadas);
           } else {
             console.error("Error al eliminar la nota:", data.message);
           }
@@ -201,54 +208,33 @@ function Home() {
 
   return (
     <div className="container mt-5">
-      <nav class="d-block navbar navbar-expand-lg navbar bg m-0 p-0">
-        <section className="d-flex justify-content-between">
-          <ul class="navbar-nav d-flex justify-content-between w-100">
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
+      <nav className="d-block navbar navbar-expand-lg navbar bg m-0 p-0 ">
+        <section className="d-flex justify-content-between ">
+          <ul className="navbar-nav d-flex justify-content-between w-100">
+                <li className="nav-item">
+                  <a className="nav-link" href="/home">
                     Home
                   </a>
                 </li>
                 <li>
                 <h5>Bienvenid@ {userName}!</h5>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/login">
+                <li className="nav-item">
+                  <a className="nav-link" href="/login">
                     Cerrar Sesión
                   </a>
                 </li>
             </ul>
         </section>
         <section className="d-flex justify-content-center">
-          <h1> Recuerda </h1>
+          <h1> Tus notas </h1>
         </section>
-        {/*<div class="d-flex flex-grow-1 p-3 m-0 w-100">
-          <a class="navbar-brand" href="#">
-            Mi Aplicación
-            </a>
-          <div class="d-flex justify-content-between w-100">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  Home
-                </a>
-              </li>
-          </ul>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  Cerrar Sesión
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>*/}
       </nav>
 
       <hr />
 
       <section className="row d-flex justify-content-center my-5">
-        <div className="col-md-6 d-flex justify-content-center">
+        {/*<div className="col-md-6 d-flex ">
           <button
             className="btn btn-success btn-lg mx-auto"
             data-bs-toggle="modal"
@@ -265,7 +251,7 @@ function Home() {
           >
             Test nueva nota
           </button>
-        </div>
+        </div>*/}
       </section>
 
       <div className="row mt-5" id="notaContainer">
@@ -281,7 +267,7 @@ function Home() {
         data-bs-keyboard="false"
       >
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div className="modal-content bg-dark text-white">
+          <div className="modal-content bg-warning-subtle">
             <div className="modal-header">
               <h5 className="modal-title" id="modalNuevaNotaLabel">
                 Nueva Nota
@@ -296,7 +282,7 @@ function Home() {
             <div className="modal-body">
               <form id="formularioNuevaNota">
                 <div className="mb-3">
-                  <label htmlFor="titulo" className="form-label text-white">
+                  <label htmlFor="titulo" className="form-label">
                     Título
                   </label>
                   <input
@@ -310,7 +296,7 @@ function Home() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="contenido" className="form-label text-white">
+                  <label htmlFor="contenido" className="form-label">
                     Contenido
                   </label>
                   <textarea
@@ -335,7 +321,7 @@ function Home() {
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-success"
                 onClick={notaActual ? guardarNotaEditada : crearNotaNueva}
                 data-bs-dismiss="modal"
               >
@@ -345,17 +331,17 @@ function Home() {
           </div>
         </div>
       </div>
-      <section className="row d-flex justify-content-center my-5">
+      <section className="position-fixed bottom-0 end-0 pb-4 pe-5">
         <div className="col-md-6 d-flex justify-content-center">
           <button
-            className="btn btn-success btn-lg mx-auto"
+            className="btn btn-success btn-lg mx-auto rounded-circle"
             data-bs-toggle="modal"
             data-bs-target="#modalNuevaNota"
           >
-            Agregar nueva nota
+            +
           </button>
         </div>
-        <div className="col-md-6">
+        {/*<div className="col-md-6">
           <button
             id="botonTest"
             className="btn btn-success btn-lg mx-auto"
@@ -363,7 +349,7 @@ function Home() {
           >
             Test nueva nota
           </button>
-        </div>
+      </div>*/}
       </section>
     </div>
   );

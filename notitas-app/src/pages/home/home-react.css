@@ -12,4 +12,23 @@ body::after {
     z-index: -1; /* Asegura que esté detrás del contenido del cuerpo*/ 
 }
 
+.-div-btn-danger {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.-div-btn-danger button {
+    background-color: transparent; 
+    color: black; 
+    border: none; 
+    padding: 5px 10px; 
+    cursor: pointer;
+}
+
+.border{
+    border-radius: 50%;
+}
+
+
 

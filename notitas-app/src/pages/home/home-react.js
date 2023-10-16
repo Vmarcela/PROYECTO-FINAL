@@ -234,7 +234,7 @@ function Home() {
       <hr />
 
       <section className="row d-flex justify-content-center my-5">
-        {/*<div className="col-md-6 d-flex ">
+        <div className="col-md-6 d-flex ">
           <button
             className="btn btn-success btn-lg mx-auto"
             data-bs-toggle="modal"
@@ -243,7 +243,7 @@ function Home() {
             Agregar nueva nota
           </button>
         </div>
-        <div className="col-md-6">
+        {/*<div className="col-md-6">
           <button
             id="botonTest"
             className="btn btn-success btn-lg mx-auto"
